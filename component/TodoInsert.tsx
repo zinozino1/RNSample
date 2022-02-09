@@ -9,23 +9,28 @@ import {
   TouchableOpacity,
   Keyboard,
 } from 'react-native';
+import {sleep} from '../lib/util';
+import shortId from 'shortid';
 
-const TodoInsert = ({insertTodo}) => {
+const TodoInsert = ({insertTodo, setLoading}) => {
   const [inputText, setInputText] = useState('');
-  const [isActiveKeyboard, setIsActiveKeyboard] = useState(true);
 
   const onChangeInput = val => {
     setInputText(val);
   };
 
   const onSubmit = () => {
-    insertTodo({
-      id: Math.random.toString(),
-      checked: false,
-      content: inputText,
+    setLoading(true);
+    sleep(1000).then(() => {
+      insertTodo({
+        id: shortId.generate(),
+        checked: false,
+        content: inputText,
+      });
+      setInputText('');
+      Keyboard.dismiss();
+      setLoading(false);
     });
-    setInputText('');
-    Keyboard.dismiss();
   };
 
   return (

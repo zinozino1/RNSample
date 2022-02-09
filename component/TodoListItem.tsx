@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
   Text,
   TouchableHighlight,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import EntIcon from 'react-native-vector-icons/Entypo';
@@ -12,11 +13,18 @@ import IoniIcon from 'react-native-vector-icons/Ionicons';
 // Icon.loadFont();
 // PencilIcon.loadFont();
 
-const TodoListItem = ({todosItem}) => {
+const TodoListItem = ({todosItem, updateTodo, deleteTodo, checkTodo}) => {
+  const [updateToggle, setUpdateToggle] = useState(false);
+  useEffect(() => {
+    console.log(updateToggle);
+  }, [updateToggle]);
   return (
     <View style={styles.container}>
       <View style={styles.checkBox}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            checkTodo(todosItem.id);
+          }}>
           {todosItem.checked ? (
             <IoniIcon name="ios-checkbox" size={20} color={'black'} />
           ) : (
@@ -26,7 +34,11 @@ const TodoListItem = ({todosItem}) => {
       </View>
 
       <View style={styles.textContent}>
-        {todosItem.checked ? (
+        {updateToggle ? (
+          <TextInput
+            value={todosItem.content}
+            style={{borderColor: 'blue', borderWidth: 2}}></TextInput>
+        ) : todosItem.checked ? (
           <Text style={{color: 'black', textDecorationLine: 'line-through'}}>
             {todosItem.content}
           </Text>
@@ -36,13 +48,19 @@ const TodoListItem = ({todosItem}) => {
       </View>
 
       <View style={styles.updateBtn}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setUpdateToggle(!updateToggle);
+          }}>
           <EntIcon name="pencil" size={20} color={'black'} />
         </TouchableOpacity>
       </View>
 
       <View style={styles.deleteBtn}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            deleteTodo(todosItem.id);
+          }}>
           <AntIcon name="delete" size={20} color={'black'} />
         </TouchableOpacity>
       </View>
