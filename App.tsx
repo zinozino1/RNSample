@@ -26,10 +26,17 @@ import TodoList from './component/TodoList';
 import TodoInsert from './component/TodoInsert';
 
 const App = () => {
+  const [todos, setTodos] = useState([
+    {id: '1', checked: false, content: 'test1'},
+    {id: '2', checked: true, content: 'test1'},
+    {id: '3', checked: false, content: 'test1'},
+    {id: '4', checked: true, content: 'test1'},
+  ]);
+
   return (
     <SafeAreaView style={styles.container}>
       <TodoTitle></TodoTitle>
-      <TodoList></TodoList>
+      <TodoList todos={todos}></TodoList>
       <TodoInsert></TodoInsert>
     </SafeAreaView>
   );
