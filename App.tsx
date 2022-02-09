@@ -38,7 +38,13 @@ const App = () => {
     setTodos([...todos, newTodo]);
   };
 
-  const updateTodo = id => {};
+  const updateTodo = (id, text) => {
+    setTodos(
+      todos.map((item, _) =>
+        item.id === id ? {...item, content: text} : item,
+      ),
+    );
+  };
 
   const deleteTodo = id => {
     setTodos(todos.filter((item, _) => item.id !== id));
@@ -65,7 +71,8 @@ const App = () => {
           todos={todos}
           updateTodo={updateTodo}
           deleteTodo={deleteTodo}
-          checkTodo={checkTodo}></TodoList>
+          checkTodo={checkTodo}
+          setLoading={setLoading}></TodoList>
         <TodoInsert
           insertTodo={insertTodo}
           setLoading={setLoading}></TodoInsert>

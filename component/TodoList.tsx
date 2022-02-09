@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet, ScrollView, Text} from 'react-native';
 import TodoListItem from './TodoListItem';
 
-const TodoList = ({todos, updateTodo, deleteTodo, checkTodo}) => {
+const TodoList = ({todos, updateTodo, deleteTodo, checkTodo, setLoading}) => {
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -12,7 +12,8 @@ const TodoList = ({todos, updateTodo, deleteTodo, checkTodo}) => {
             key={item.id}
             updateTodo={updateTodo}
             deleteTodo={deleteTodo}
-            checkTodo={checkTodo}></TodoListItem>
+            checkTodo={checkTodo}
+            setLoading={setLoading}></TodoListItem>
         ))}
       </View>
     </ScrollView>

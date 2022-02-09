@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   StyleSheet,
@@ -6,18 +6,44 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   TextInput,
+  Keyboard,
 } from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import EntIcon from 'react-native-vector-icons/Entypo';
 import IoniIcon from 'react-native-vector-icons/Ionicons';
-// Icon.loadFont();
-// PencilIcon.loadFont();
+import {sleep} from '../lib/util';
+AntIcon.loadFont();
+EntIcon.loadFont();
+IoniIcon.loadFont();
 
-const TodoListItem = ({todosItem, updateTodo, deleteTodo, checkTodo}) => {
+const TodoListItem = ({
+  todosItem,
+  updateTodo,
+  deleteTodo,
+  checkTodo,
+  setLoading,
+}) => {
   const [updateToggle, setUpdateToggle] = useState(false);
+  const updateInputRef = useRef(null);
+  const [updateText, setUpdateText] = useState(todosItem.content);
+  const onChangeInput = val => {
+    setUpdateText(val);
+  };
+  const onUpdateSubmit = () => {
+    setLoading(true);
+    sleep(1000).then(() => {
+      updateTodo(todosItem.id, updateText);
+      Keyboard.dismiss();
+      setLoading(false);
+    });
+  };
+
   useEffect(() => {
-    console.log(updateToggle);
+    if (updateInputRef.current && updateToggle) {
+      updateInputRef.current.focus();
+    }
   }, [updateToggle]);
+
   return (
     <View style={styles.container}>
       <View style={styles.checkBox}>
@@ -36,8 +62,16 @@ const TodoListItem = ({todosItem, updateTodo, deleteTodo, checkTodo}) => {
       <View style={styles.textContent}>
         {updateToggle ? (
           <TextInput
-            value={todosItem.content}
-            style={{borderColor: 'blue', borderWidth: 2}}></TextInput>
+            ref={el => {
+              updateInputRef.current = el;
+            }}
+            value={updateText}
+            style={{
+              borderColor: 'blue',
+              borderWidth: 1,
+              padding: 2,
+            }}
+            onChangeText={onChangeInput}></TextInput>
         ) : todosItem.checked ? (
           <Text style={{color: 'black', textDecorationLine: 'line-through'}}>
             {todosItem.content}
@@ -48,12 +82,22 @@ const TodoListItem = ({todosItem, updateTodo, deleteTodo, checkTodo}) => {
       </View>
 
       <View style={styles.updateBtn}>
-        <TouchableOpacity
-          onPress={() => {
-            setUpdateToggle(!updateToggle);
-          }}>
-          <EntIcon name="pencil" size={20} color={'black'} />
-        </TouchableOpacity>
+        {updateToggle ? (
+          <TouchableOpacity
+            onPress={() => {
+              onUpdateSubmit();
+              setUpdateToggle(!updateToggle);
+            }}>
+            <EntIcon name="check" size={20} color={'black'} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              setUpdateToggle(!updateToggle);
+            }}>
+            <EntIcon name="pencil" size={20} color={'black'} />
+          </TouchableOpacity>
+        )}
       </View>
 
       <View style={styles.deleteBtn}>
