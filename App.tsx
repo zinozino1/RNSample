@@ -33,11 +33,19 @@ const App = () => {
     {id: '4', checked: true, content: 'test1'},
   ]);
 
+  const insertTodo = newTodo => {
+    setTodos([...todos, newTodo]);
+  };
+
+  const updateTodo = () => {};
+
+  const deleteTodo = () => {};
+
   return (
     <SafeAreaView style={styles.container}>
       <TodoTitle></TodoTitle>
       <TodoList todos={todos}></TodoList>
-      <TodoInsert></TodoInsert>
+      <TodoInsert insertTodo={insertTodo}></TodoInsert>
     </SafeAreaView>
   );
 };

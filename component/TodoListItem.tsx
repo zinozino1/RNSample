@@ -18,20 +18,20 @@ const TodoListItem = ({todosItem}) => {
       <View style={styles.checkBox}>
         <TouchableOpacity>
           {todosItem.checked ? (
-            <IoniIcon name="ios-checkbox-outline" size={20} color={'black'} />
-          ) : (
             <IoniIcon name="ios-checkbox" size={20} color={'black'} />
+          ) : (
+            <IoniIcon name="ios-checkbox-outline" size={20} color={'black'} />
           )}
         </TouchableOpacity>
       </View>
 
       <View style={styles.textContent}>
         {todosItem.checked ? (
-          <Text style={{color: 'black'}}>{todosItem.content}</Text>
-        ) : (
           <Text style={{color: 'black', textDecorationLine: 'line-through'}}>
             {todosItem.content}
           </Text>
+        ) : (
+          <Text style={{color: 'black'}}>{todosItem.content}</Text>
         )}
       </View>
 

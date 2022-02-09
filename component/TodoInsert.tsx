@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -6,19 +6,42 @@ import {
   Text,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity,
+  Keyboard,
 } from 'react-native';
 
-const TodoInsert = () => {
+const TodoInsert = ({insertTodo}) => {
+  const [inputText, setInputText] = useState('');
+  const [isActiveKeyboard, setIsActiveKeyboard] = useState(true);
+
+  const onChangeInput = val => {
+    setInputText(val);
+  };
+
+  const onSubmit = () => {
+    insertTodo({
+      id: Math.random.toString(),
+      checked: false,
+      content: inputText,
+    });
+    setInputText('');
+    Keyboard.dismiss();
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      {/* <View> */}
-      <TextInput style={styles.input} placeholder="Write your task.." />
-      <View style={styles.writeBtn}>
+      <TextInput
+        style={styles.input}
+        placeholder="Write your task.."
+        onChangeText={onChangeInput}
+        value={inputText}
+      />
+
+      <TouchableOpacity onPress={onSubmit} style={styles.writeBtn}>
         <Text style={{fontSize: 30, color: '#fff'}}>+</Text>
-      </View>
-      {/* </View> */}
+      </TouchableOpacity>
     </KeyboardAvoidingView>
   );
 };
