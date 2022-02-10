@@ -26,15 +26,15 @@ import TodoTitle from './component/TodoTitle';
 import TodoList from './component/TodoList';
 import TodoInsert from './component/TodoInsert';
 
-const App = () => {
-  const [loading, setLoading] = useState(false);
-  const [todos, setTodos] = useState([]);
+const App: React.FC = () => {
+  const [loading, setLoading] = useState<Boolean>(false);
+  const [todos, setTodos] = useState<Object[]>([]);
 
-  const insertTodo = newTodo => {
+  const insertTodo = (newTodo: Object): void => {
     setTodos([...todos, newTodo]);
   };
 
-  const updateTodo = (id, text) => {
+  const updateTodo = (id: String, text: String): void => {
     setTodos(
       todos.map((item, _) =>
         item.id === id ? {...item, content: text} : item,
@@ -42,11 +42,11 @@ const App = () => {
     );
   };
 
-  const deleteTodo = id => {
+  const deleteTodo = (id: String): void => {
     setTodos(todos.filter((item, _) => item.id !== id));
   };
 
-  const checkTodo = id => {
+  const checkTodo = (id: String): void => {
     setTodos(
       todos.map((item, _) =>
         item.id === id ? {...item, checked: !item.checked} : item,

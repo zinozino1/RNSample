@@ -17,22 +17,36 @@ AntIcon.loadFont();
 EntIcon.loadFont();
 IoniIcon.loadFont();
 
-const TodoListItem = ({
+interface Item {
+  id: String;
+  content: String;
+  checked: Boolean;
+}
+
+interface Props {
+  todosItem: Item;
+  updateTodo: (id: String, text: String) => void;
+  deleteTodo: (id: String) => void;
+  checkTodo: (id: String) => void;
+  setLoading: (loading: Boolean) => void;
+}
+
+const TodoListItem: React.FC<Props> = ({
   todosItem,
   updateTodo,
   deleteTodo,
   checkTodo,
   setLoading,
 }) => {
-  const [updateToggle, setUpdateToggle] = useState(false);
-  const updateInputRef = useRef(null);
-  const [updateText, setUpdateText] = useState(todosItem.content);
+  const [updateToggle, setUpdateToggle] = useState<Boolean>(false);
+  const updateInputRef = useRef<TextInput>(null);
+  const [updateText, setUpdateText] = useState<String>(todosItem.content);
 
-  const onChangeInput = val => {
+  const onChangeInput = (val: String): void => {
     setUpdateText(val);
   };
 
-  const onUpdateSubmit = async () => {
+  const onUpdateSubmit = async (): Promise<void> => {
     try {
       // await fetchingAsyncStorageAndDoJob(setLoading, )
       setLoading(true);
@@ -51,7 +65,7 @@ const TodoListItem = ({
     }
   };
 
-  const onUpdateCheck = async () => {
+  const onUpdateCheck = async (): Promise<void> => {
     try {
       setLoading(true);
       const res = await AsyncStorage.getItem('task');
@@ -69,7 +83,7 @@ const TodoListItem = ({
     }
   };
 
-  const onUpdateDelete = async () => {
+  const onUpdateDelete = async (): Promise<void> => {
     try {
       setLoading(true);
       const res = await AsyncStorage.getItem('task');

@@ -2,7 +2,21 @@ import React from 'react';
 import {View, StyleSheet, ScrollView, Text} from 'react-native';
 import TodoListItem from './TodoListItem';
 
-const TodoList = ({todos, updateTodo, deleteTodo, checkTodo, setLoading}) => {
+interface Props {
+  todos: Object[];
+  updateTodo: (id: String, text: String) => void;
+  deleteTodo: (id: String) => void;
+  checkTodo: (id: String) => void;
+  setLoading: (loading: Boolean) => void;
+}
+
+const TodoList: React.FC<Props> = ({
+  todos,
+  updateTodo,
+  deleteTodo,
+  checkTodo,
+  setLoading,
+}) => {
   return (
     <ScrollView>
       <View style={styles.container}>

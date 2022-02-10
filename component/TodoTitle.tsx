@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 
-const TodoTitle = () => {
+const TodoTitle: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Today's Tasks</Text>

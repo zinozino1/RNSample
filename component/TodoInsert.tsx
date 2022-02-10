@@ -13,14 +13,20 @@ import {
 import {sleep} from '../lib/util';
 import shortId from 'shortid';
 
-const TodoInsert = ({insertTodo, setLoading, todos}) => {
-  const [inputText, setInputText] = useState('');
+interface Props {
+  insertTodo: (newTodo: Object) => void;
+  setLoading: (loading: boolean) => void;
+  todos: Object[];
+}
 
-  const onChangeInput = val => {
+const TodoInsert: React.FC<Props> = ({insertTodo, setLoading, todos}) => {
+  const [inputText, setInputText] = useState<String>('');
+
+  const onChangeInput = (val: string): void => {
     setInputText(val);
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (): Promise<void> => {
     try {
       setLoading(true);
 
