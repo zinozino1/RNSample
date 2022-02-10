@@ -19,6 +19,7 @@ import {
   Image,
   FlatList,
   TextInput,
+  AsyncStorage,
 } from 'react-native';
 
 import TodoTitle from './component/TodoTitle';
@@ -27,12 +28,7 @@ import TodoInsert from './component/TodoInsert';
 
 const App = () => {
   const [loading, setLoading] = useState(false);
-  const [todos, setTodos] = useState([
-    {id: '1', checked: false, content: 'test1'},
-    {id: '2', checked: true, content: 'test1'},
-    {id: '3', checked: false, content: 'test1'},
-    {id: '4', checked: true, content: 'test1'},
-  ]);
+  const [todos, setTodos] = useState([]);
 
   const insertTodo = newTodo => {
     setTodos([...todos, newTodo]);
@@ -58,6 +54,21 @@ const App = () => {
     );
   };
 
+  useEffect(() => {
+    try {
+      const fetchingAsyncStorage = async () => {
+        const res = await AsyncStorage.getItem('task');
+        if (res) {
+          console.log(JSON.parse(res));
+          setTodos(JSON.parse(res));
+        }
+      };
+      fetchingAsyncStorage();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -75,7 +86,8 @@ const App = () => {
           setLoading={setLoading}></TodoList>
         <TodoInsert
           insertTodo={insertTodo}
-          setLoading={setLoading}></TodoInsert>
+          setLoading={setLoading}
+          todos={todos}></TodoInsert>
       </SafeAreaView>
     </>
   );

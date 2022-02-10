@@ -24,8 +24,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     paddingTop: 10,
-    borderColor: 'red',
-    borderWidth: 2,
   },
 });
 

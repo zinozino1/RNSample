@@ -8,29 +8,40 @@ import {
   Platform,
   TouchableOpacity,
   Keyboard,
+  AsyncStorage,
 } from 'react-native';
 import {sleep} from '../lib/util';
 import shortId from 'shortid';
 
-const TodoInsert = ({insertTodo, setLoading}) => {
+const TodoInsert = ({insertTodo, setLoading, todos}) => {
   const [inputText, setInputText] = useState('');
 
   const onChangeInput = val => {
     setInputText(val);
   };
 
-  const onSubmit = () => {
-    setLoading(true);
-    sleep(1000).then(() => {
-      insertTodo({
+  const onSubmit = async () => {
+    try {
+      setLoading(true);
+
+      const newTodo = {
         id: shortId.generate(),
         checked: false,
         content: inputText,
-      });
+      };
+
+      insertTodo({...newTodo});
       setInputText('');
       Keyboard.dismiss();
       setLoading(false);
-    });
+
+      await AsyncStorage.setItem(
+        'task',
+        JSON.stringify([...todos, {...newTodo}]),
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -54,8 +65,7 @@ const TodoInsert = ({insertTodo, setLoading}) => {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    borderColor: 'green',
-    borderWidth: 2,
+
     //position: 'absolute',
     //bottom: 40,
     width: '100%',

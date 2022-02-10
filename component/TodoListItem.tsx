@@ -7,11 +7,12 @@ import {
   TouchableOpacity,
   TextInput,
   Keyboard,
+  AsyncStorage,
 } from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import EntIcon from 'react-native-vector-icons/Entypo';
 import IoniIcon from 'react-native-vector-icons/Ionicons';
-import {sleep} from '../lib/util';
+import {sleep, fetchingAsyncStorageAndDoJob} from '../lib/util';
 AntIcon.loadFont();
 EntIcon.loadFont();
 IoniIcon.loadFont();
@@ -26,16 +27,64 @@ const TodoListItem = ({
   const [updateToggle, setUpdateToggle] = useState(false);
   const updateInputRef = useRef(null);
   const [updateText, setUpdateText] = useState(todosItem.content);
+
   const onChangeInput = val => {
     setUpdateText(val);
   };
-  const onUpdateSubmit = () => {
-    setLoading(true);
-    sleep(1000).then(() => {
-      updateTodo(todosItem.id, updateText);
-      Keyboard.dismiss();
-      setLoading(false);
-    });
+
+  const onUpdateSubmit = async () => {
+    try {
+      // await fetchingAsyncStorageAndDoJob(setLoading, )
+      setLoading(true);
+      const res = await AsyncStorage.getItem('task');
+      if (res) {
+        const newTodos = JSON.parse(res).map((item, _) =>
+          item.id === todosItem.id ? {...item, content: updateText} : item,
+        );
+        updateTodo(todosItem.id, updateText);
+        Keyboard.dismiss();
+        setLoading(false);
+        await AsyncStorage.setItem('task', JSON.stringify(newTodos));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onUpdateCheck = async () => {
+    try {
+      setLoading(true);
+      const res = await AsyncStorage.getItem('task');
+      if (res) {
+        const newTodos = JSON.parse(res).map((item, _) =>
+          item.id === todosItem.id ? {...item, checked: !item.checked} : item,
+        );
+        checkTodo(todosItem.id);
+
+        setLoading(false);
+        await AsyncStorage.setItem('task', JSON.stringify(newTodos));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onUpdateDelete = async () => {
+    try {
+      setLoading(true);
+      const res = await AsyncStorage.getItem('task');
+      if (res) {
+        const newTodos = JSON.parse(res).filter(
+          (item, _) => item.id !== todosItem.id,
+        );
+        deleteTodo(todosItem.id);
+
+        setLoading(false);
+        await AsyncStorage.setItem('task', JSON.stringify(newTodos));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -49,7 +98,7 @@ const TodoListItem = ({
       <View style={styles.checkBox}>
         <TouchableOpacity
           onPress={() => {
-            checkTodo(todosItem.id);
+            onUpdateCheck();
           }}>
           {todosItem.checked ? (
             <IoniIcon name="ios-checkbox" size={20} color={'black'} />
@@ -67,9 +116,10 @@ const TodoListItem = ({
             }}
             value={updateText}
             style={{
-              borderColor: 'blue',
+              borderColor: '#548CFF',
               borderWidth: 1,
               padding: 2,
+              marginRight: 5,
             }}
             onChangeText={onChangeInput}></TextInput>
         ) : todosItem.checked ? (
@@ -103,7 +153,7 @@ const TodoListItem = ({
       <View style={styles.deleteBtn}>
         <TouchableOpacity
           onPress={() => {
-            deleteTodo(todosItem.id);
+            onUpdateDelete();
           }}>
           <AntIcon name="delete" size={20} color={'black'} />
         </TouchableOpacity>

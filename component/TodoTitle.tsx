@@ -12,8 +12,6 @@ const TodoTitle = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    borderColor: 'blue',
-    borderWidth: 2,
   },
   title: {
     fontWeight: 'bold',
