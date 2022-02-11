@@ -12,19 +12,16 @@ import {
 } from 'react-native';
 import {sleep} from '../lib/util';
 import shortId from 'shortid';
+import useInput from '../hooks/useInput';
 
 interface Props {
-  insertTodo: (newTodo: Object) => void;
+  insertTodo: (newTodo: object) => void;
   setLoading: (loading: boolean) => void;
-  todos: Object[];
+  todos: object[];
 }
 
 const TodoInsert: React.FC<Props> = ({insertTodo, setLoading, todos}) => {
-  const [inputText, setInputText] = useState<String>('');
-
-  const onChangeInput = (val: string): void => {
-    setInputText(val);
-  };
+  const [inputText, setInputText, onChangeInput] = useInput<string>('');
 
   const onSubmit = async (): Promise<void> => {
     try {
@@ -71,12 +68,8 @@ const TodoInsert: React.FC<Props> = ({insertTodo, setLoading, todos}) => {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-
-    //position: 'absolute',
-    //bottom: 40,
     width: '100%',
     flexDirection: 'row',
-
     backgroundColor: '#E8EAED',
   },
   input: {
@@ -86,13 +79,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#fff',
     borderWidth: 1,
-    // width: 250,
+
     flex: 4,
     margin: 10,
   },
   writeBtn: {
-    // width: 50,
-    // height: 50,
     backgroundColor: '#548CFF',
     borderRadius: 10,
     justifyContent: 'center',

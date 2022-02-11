@@ -3,11 +3,11 @@ import {View, StyleSheet, ScrollView, Text} from 'react-native';
 import TodoListItem from './TodoListItem';
 
 interface Props {
-  todos: Object[];
-  updateTodo: (id: String, text: String) => void;
-  deleteTodo: (id: String) => void;
-  checkTodo: (id: String) => void;
-  setLoading: (loading: Boolean) => void;
+  todos: object[];
+  updateTodo: (id: string, text: string) => void;
+  deleteTodo: (id: string) => void;
+  checkTodo: (id: string) => void;
+  setLoading: (loading: boolean) => void;
 }
 
 const TodoList: React.FC<Props> = ({

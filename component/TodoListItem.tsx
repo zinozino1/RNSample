@@ -13,22 +13,23 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import EntIcon from 'react-native-vector-icons/Entypo';
 import IoniIcon from 'react-native-vector-icons/Ionicons';
 import {sleep, fetchingAsyncStorageAndDoJob} from '../lib/util';
+import useInput from '../hooks/useInput';
 AntIcon.loadFont();
 EntIcon.loadFont();
 IoniIcon.loadFont();
 
 interface Item {
-  id: String;
-  content: String;
-  checked: Boolean;
+  id: string;
+  content: string;
+  checked: boolean;
 }
 
 interface Props {
   todosItem: Item;
-  updateTodo: (id: String, text: String) => void;
-  deleteTodo: (id: String) => void;
-  checkTodo: (id: String) => void;
-  setLoading: (loading: Boolean) => void;
+  updateTodo: (id: string, text: string) => void;
+  deleteTodo: (id: string) => void;
+  checkTodo: (id: string) => void;
+  setLoading: (loading: boolean) => void;
 }
 
 const TodoListItem: React.FC<Props> = ({
@@ -38,13 +39,13 @@ const TodoListItem: React.FC<Props> = ({
   checkTodo,
   setLoading,
 }) => {
-  const [updateToggle, setUpdateToggle] = useState<Boolean>(false);
+  const [updateToggle, setUpdateToggle] = useState<boolean>(false);
   const updateInputRef = useRef<TextInput>(null);
-  const [updateText, setUpdateText] = useState<String>(todosItem.content);
+  const [updateText, setUpdateText, onChangeInput] = useInput<string>(
+    todosItem.content,
+  );
 
-  const onChangeInput = (val: String): void => {
-    setUpdateText(val);
-  };
+  console.log(todosItem.id, ' : rerender!');
 
   const onUpdateSubmit = async (): Promise<void> => {
     try {
@@ -197,4 +198,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TodoListItem;
+export default React.memo(TodoListItem);
