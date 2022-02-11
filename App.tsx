@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 //import type {Node} from 'react';
 import {
   SafeAreaView,
@@ -34,25 +34,25 @@ const App: React.FC = () => {
     setTodos([...todos, newTodo]);
   };
 
-  const updateTodo = (id: String, text: String): void => {
-    setTodos(
+  const updateTodo = useCallback((id: String, text: String): void => {
+    setTodos(todos =>
       todos.map((item, _) =>
         item.id === id ? {...item, content: text} : item,
       ),
     );
-  };
+  }, []);
 
-  const deleteTodo = (id: String): void => {
-    setTodos(todos.filter((item, _) => item.id !== id));
-  };
+  const deleteTodo = useCallback((id: String): void => {
+    setTodos(todos => todos.filter((item, _) => item.id !== id));
+  }, []);
 
-  const checkTodo = (id: String): void => {
-    setTodos(
+  const checkTodo = useCallback((id: String): void => {
+    setTodos(todos =>
       todos.map((item, _) =>
         item.id === id ? {...item, checked: !item.checked} : item,
       ),
     );
-  };
+  }, []);
 
   useEffect(() => {
     try {

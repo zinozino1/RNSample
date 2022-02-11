@@ -45,11 +45,8 @@ const TodoListItem: React.FC<Props> = ({
     todosItem.content,
   );
 
-  console.log(todosItem.id, ' : rerender!');
-
   const onUpdateSubmit = async (): Promise<void> => {
     try {
-      // await fetchingAsyncStorageAndDoJob(setLoading, )
       setLoading(true);
       const res = await AsyncStorage.getItem('task');
       if (res) {
@@ -68,7 +65,6 @@ const TodoListItem: React.FC<Props> = ({
 
   const onUpdateCheck = async (): Promise<void> => {
     try {
-      setLoading(true);
       const res = await AsyncStorage.getItem('task');
       if (res) {
         const newTodos = JSON.parse(res).map((item, _) =>
@@ -76,7 +72,6 @@ const TodoListItem: React.FC<Props> = ({
         );
         checkTodo(todosItem.id);
 
-        setLoading(false);
         await AsyncStorage.setItem('task', JSON.stringify(newTodos));
       }
     } catch (error) {
