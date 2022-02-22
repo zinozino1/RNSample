@@ -56,17 +56,28 @@ const App: React.FC = () => {
 
   useEffect(() => {
     try {
-      const fetchingAsyncStorage = async () => {
+      const loadAsyncStorage = async () => {
         const res = await AsyncStorage.getItem('task');
-        if (res) {
-          setTodos(JSON.parse(res));
-        }
+        setTodos(JSON.parse(res));
       };
-      fetchingAsyncStorage();
+      loadAsyncStorage();
     } catch (error) {
       console.log(error);
     }
   }, []);
+
+  useEffect(() => {
+    try {
+      setLoading(true);
+      const saveAsyncStorage = async () => {
+        await AsyncStorage.setItem('task', JSON.stringify(todos));
+      };
+      saveAsyncStorage();
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [todos]);
 
   return (
     <>
@@ -81,8 +92,7 @@ const App: React.FC = () => {
           todos={todos}
           updateTodo={updateTodo}
           deleteTodo={deleteTodo}
-          checkTodo={checkTodo}
-          setLoading={setLoading}></TodoList>
+          checkTodo={checkTodo}></TodoList>
         <TodoInsert
           insertTodo={insertTodo}
           setLoading={setLoading}

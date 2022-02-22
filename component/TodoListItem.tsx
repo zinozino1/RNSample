@@ -38,65 +38,12 @@ const TodoListItem: React.FC<Props> = ({
   updateTodo,
   deleteTodo,
   checkTodo,
-  setLoading,
 }) => {
   const [updateToggle, setUpdateToggle] = useState<boolean>(false);
   const updateInputRef = useRef<TextInput>(null);
   const [updateText, setUpdateText, onChangeInput] = useInput<string>(
     todosItem.content || '',
   );
-
-  const onUpdateSubmit = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      const res = await AsyncStorage.getItem('task');
-      if (res) {
-        const newTodos = JSON.parse(res).map((item, _) =>
-          item.id === todosItem.id ? {...item, content: updateText} : item,
-        );
-        updateTodo(todosItem.id, updateText);
-        Keyboard.dismiss();
-        setLoading(false);
-        await AsyncStorage.setItem('task', JSON.stringify(newTodos));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const onUpdateCheck = async (): Promise<void> => {
-    try {
-      const res = await AsyncStorage.getItem('task');
-      if (res) {
-        const newTodos = JSON.parse(res).map((item, _) =>
-          item.id === todosItem.id ? {...item, checked: !item.checked} : item,
-        );
-        checkTodo(todosItem.id);
-
-        await AsyncStorage.setItem('task', JSON.stringify(newTodos));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const onUpdateDelete = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      const res = await AsyncStorage.getItem('task');
-      if (res) {
-        const newTodos = JSON.parse(res).filter(
-          (item, _) => item.id !== todosItem.id,
-        );
-        deleteTodo(todosItem.id);
-
-        setLoading(false);
-        await AsyncStorage.setItem('task', JSON.stringify(newTodos));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
     if (updateInputRef.current && updateToggle) {
@@ -109,7 +56,7 @@ const TodoListItem: React.FC<Props> = ({
       <View style={styles.checkBox}>
         <TouchableOpacity
           onPress={() => {
-            onUpdateCheck();
+            checkTodo(todosItem.id);
           }}>
           {todosItem.checked ? (
             <IoniIcon name="ios-checkbox" size={20} color={'black'} />
@@ -146,7 +93,8 @@ const TodoListItem: React.FC<Props> = ({
         {updateToggle ? (
           <TouchableOpacity
             onPress={() => {
-              onUpdateSubmit();
+              updateTodo(todosItem.id, updateText);
+              Keyboard.dismiss();
               setUpdateToggle(!updateToggle);
             }}>
             <EntIcon name="check" size={20} color={'black'} />
@@ -172,7 +120,7 @@ const TodoListItem: React.FC<Props> = ({
                 {
                   text: '삭제',
                   onPress: () => {
-                    onUpdateDelete();
+                    deleteTodo(todosItem.id);
                   },
                   style: 'destructive',
                 },

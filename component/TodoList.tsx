@@ -15,7 +15,6 @@ const TodoList: React.FC<Props> = ({
   updateTodo,
   deleteTodo,
   checkTodo,
-  setLoading,
 }) => {
   return (
     <ScrollView>
@@ -26,8 +25,7 @@ const TodoList: React.FC<Props> = ({
             key={item.id}
             updateTodo={updateTodo}
             deleteTodo={deleteTodo}
-            checkTodo={checkTodo}
-            setLoading={setLoading}></TodoListItem>
+            checkTodo={checkTodo}></TodoListItem>
         ))}
       </View>
     </ScrollView>
