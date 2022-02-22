@@ -8,6 +8,7 @@ import {
   TextInput,
   Keyboard,
   AsyncStorage,
+  Alert,
 } from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import EntIcon from 'react-native-vector-icons/Entypo';
@@ -42,7 +43,7 @@ const TodoListItem: React.FC<Props> = ({
   const [updateToggle, setUpdateToggle] = useState<boolean>(false);
   const updateInputRef = useRef<TextInput>(null);
   const [updateText, setUpdateText, onChangeInput] = useInput<string>(
-    todosItem.content,
+    todosItem.content || '',
   );
 
   const onUpdateSubmit = async (): Promise<void> => {
@@ -163,9 +164,23 @@ const TodoListItem: React.FC<Props> = ({
       <View style={styles.deleteBtn}>
         <TouchableOpacity
           onPress={() => {
-            onUpdateDelete();
+            Alert.alert(
+              '삭제',
+              '정말로 삭제하시겠습니까?',
+              [
+                {text: '취소', onPress: () => {}, style: 'cancel'},
+                {
+                  text: '삭제',
+                  onPress: () => {
+                    onUpdateDelete();
+                  },
+                  style: 'destructive',
+                },
+              ],
+              {cancelable: true, onDismiss: () => {}},
+            );
           }}>
-          <AntIcon name="delete" size={20} color={'black'} />
+          <AntIcon name="delete" size={20} color="black" />
         </TouchableOpacity>
       </View>
     </View>

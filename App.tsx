@@ -59,7 +59,6 @@ const App: React.FC = () => {
       const fetchingAsyncStorage = async () => {
         const res = await AsyncStorage.getItem('task');
         if (res) {
-          console.log(JSON.parse(res));
           setTodos(JSON.parse(res));
         }
       };

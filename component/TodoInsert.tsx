@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#fff',
     borderWidth: 1,
-
     flex: 4,
     margin: 10,
   },
