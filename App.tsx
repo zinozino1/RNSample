@@ -26,15 +26,21 @@ import TodoTitle from './component/TodoTitle';
 import TodoList from './component/TodoList';
 import TodoInsert from './component/TodoInsert';
 
-const App: React.FC = () => {
-  const [loading, setLoading] = useState<Boolean>(false);
-  const [todos, setTodos] = useState<Object[]>([]);
+interface TodoItem {
+  id: string;
+  content: string;
+  checked: boolean;
+}
 
-  const insertTodo = (newTodo: Object): void => {
+const App: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [todos, setTodos] = useState<TodoItem[]>([]);
+
+  const insertTodo = (newTodo: TodoItem): void => {
     setTodos([...todos, newTodo]);
   };
 
-  const updateTodo = useCallback((id: String, text: String): void => {
+  const updateTodo = useCallback((id: string, text: string): void => {
     setTodos(todos =>
       todos.map((item, _) =>
         item.id === id ? {...item, content: text} : item,
@@ -42,11 +48,11 @@ const App: React.FC = () => {
     );
   }, []);
 
-  const deleteTodo = useCallback((id: String): void => {
+  const deleteTodo = useCallback((id: string): void => {
     setTodos(todos => todos.filter((item, _) => item.id !== id));
   }, []);
 
-  const checkTodo = useCallback((id: String): void => {
+  const checkTodo = useCallback((id: string): void => {
     setTodos(todos =>
       todos.map((item, _) =>
         item.id === id ? {...item, checked: !item.checked} : item,
@@ -56,11 +62,13 @@ const App: React.FC = () => {
 
   useEffect(() => {
     try {
+      setLoading(true);
       const loadAsyncStorage = async () => {
         const res = await AsyncStorage.getItem('task');
         setTodos(JSON.parse(res));
       };
       loadAsyncStorage();
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }

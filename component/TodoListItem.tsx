@@ -19,14 +19,14 @@ AntIcon.loadFont();
 EntIcon.loadFont();
 IoniIcon.loadFont();
 
-interface Item {
+interface TodoItem {
   id: string;
   content: string;
   checked: boolean;
 }
 
 interface Props {
-  todosItem: Item;
+  todosItem: TodoItem;
   updateTodo: (id: string, text: string) => void;
   deleteTodo: (id: string) => void;
   checkTodo: (id: string) => void;
