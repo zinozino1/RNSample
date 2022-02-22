@@ -79,7 +79,13 @@ const TodoListItem: React.FC<Props> = ({
               padding: 2,
               marginRight: 5,
             }}
-            onChangeText={onChangeInput}></TextInput>
+            onChangeText={onChangeInput}
+            onSubmitEditing={() => {
+              updateTodo(todosItem.id, updateText);
+              Keyboard.dismiss();
+              setUpdateToggle(!updateToggle);
+            }}
+            returnKeyType="done"></TextInput>
         ) : todosItem.checked ? (
           <Text style={{color: 'black', textDecorationLine: 'line-through'}}>
             {todosItem.content}
