@@ -59,9 +59,9 @@ const TodoListItem: React.FC<Props> = ({
             checkTodo(todosItem.id);
           }}>
           {todosItem.checked ? (
-            <IoniIcon name="ios-checkbox" size={20} color={'black'} />
+            <IoniIcon name="ios-checkbox" size={20} color="black" />
           ) : (
-            <IoniIcon name="ios-checkbox-outline" size={20} color={'black'} />
+            <IoniIcon name="ios-checkbox-outline" size={20} color="black" />
           )}
         </TouchableOpacity>
       </View>
@@ -103,14 +103,14 @@ const TodoListItem: React.FC<Props> = ({
               Keyboard.dismiss();
               setUpdateToggle(!updateToggle);
             }}>
-            <EntIcon name="check" size={20} color={'black'} />
+            <EntIcon name="check" size={20} color="black" />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
             onPress={() => {
               setUpdateToggle(!updateToggle);
             }}>
-            <EntIcon name="pencil" size={20} color={'black'} />
+            <EntIcon name="pencil" size={20} color="black" />
           </TouchableOpacity>
         )}
       </View>

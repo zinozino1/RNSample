@@ -36,9 +36,9 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [todos, setTodos] = useState<TodoItem[]>([]);
 
-  const insertTodo = (newTodo: TodoItem): void => {
-    setTodos([...todos, newTodo]);
-  };
+  const insertTodo = useCallback((newTodo: TodoItem): void => {
+    setTodos(todos => todos.concat(newTodo));
+  }, []);
 
   const updateTodo = useCallback((id: string, text: string): void => {
     setTodos(todos =>

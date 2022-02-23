@@ -24,33 +24,22 @@ const TodoInsert: React.FC<Props> = ({insertTodo, setLoading, todos}) => {
   const [inputText, setInputText, onChangeInput] = useInput<string>('');
 
   const onSubmit = async (): Promise<void> => {
-    try {
-      setLoading(true);
+    const newTodo = {
+      id: shortId.generate(),
+      checked: false,
+      content: inputText,
+    };
 
-      const newTodo = {
-        id: shortId.generate(),
-        checked: false,
-        content: inputText,
-      };
-
-      insertTodo({...newTodo});
-      setInputText('');
-      Keyboard.dismiss();
-      setLoading(false);
-
-      await AsyncStorage.setItem(
-        'task',
-        JSON.stringify([...todos, {...newTodo}]),
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    insertTodo({...newTodo});
+    setInputText('');
+    Keyboard.dismiss();
+    setLoading(false);
   };
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      behavior={Platform.select({ios: 'padding', android: undefined})}>
       <TextInput
         style={styles.input}
         placeholder="Write your task.."
