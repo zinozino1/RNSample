@@ -14,10 +14,16 @@ import {sleep} from '../lib/util';
 import shortId from 'shortid';
 import useInput from '../hooks/useInput';
 
+interface TodoItem {
+  id: string;
+  content: string;
+  checked: boolean;
+}
+
 interface Props {
   insertTodo: (newTodo: object) => void;
   setLoading: (loading: boolean) => void;
-  todos: object[];
+  todos: TodoItem[];
 }
 
 const TodoInsert: React.FC<Props> = ({insertTodo, setLoading, todos}) => {

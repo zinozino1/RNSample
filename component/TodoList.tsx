@@ -2,8 +2,14 @@ import React from 'react';
 import {View, StyleSheet, ScrollView, Text} from 'react-native';
 import TodoListItem from './TodoListItem';
 
+interface TodoItem {
+  id: string;
+  content: string;
+  checked: boolean;
+}
+
 interface Props {
-  todos: object[];
+  todos: TodoItem[];
   updateTodo: (id: string, text: string) => void;
   deleteTodo: (id: string) => void;
   checkTodo: (id: string) => void;
