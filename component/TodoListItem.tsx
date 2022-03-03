@@ -13,8 +13,8 @@ import {
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import EntIcon from 'react-native-vector-icons/Entypo';
 import IoniIcon from 'react-native-vector-icons/Ionicons';
-import {sleep, fetchingAsyncStorageAndDoJob} from '../lib/util';
 import useInput from '../hooks/useInput';
+
 AntIcon.loadFont();
 EntIcon.loadFont();
 IoniIcon.loadFont();
@@ -44,6 +44,30 @@ const TodoListItem: React.FC<Props> = ({
   const [updateText, setUpdateText, onChangeInput] = useInput<string>(
     todosItem.content || '',
   );
+
+  const onUpdateText = () => {
+    updateTodo(todosItem.id, updateText);
+    Keyboard.dismiss();
+    setUpdateToggle(!updateToggle);
+  };
+
+  const onDeleteText = () => {
+    Alert.alert(
+      '삭제',
+      '정말로 삭제하시겠습니까?',
+      [
+        {text: '취소', onPress: () => {}, style: 'cancel'},
+        {
+          text: '삭제',
+          onPress: () => {
+            deleteTodo(todosItem.id);
+          },
+          style: 'destructive',
+        },
+      ],
+      {cancelable: true, onDismiss: () => {}},
+    );
+  };
 
   useEffect(() => {
     if (updateInputRef.current && updateToggle) {
@@ -80,11 +104,7 @@ const TodoListItem: React.FC<Props> = ({
               marginRight: 5,
             }}
             onChangeText={onChangeInput}
-            onSubmitEditing={() => {
-              updateTodo(todosItem.id, updateText);
-              Keyboard.dismiss();
-              setUpdateToggle(!updateToggle);
-            }}
+            onSubmitEditing={onUpdateText}
             returnKeyType="done"></TextInput>
         ) : todosItem.checked ? (
           <Text style={{color: 'black', textDecorationLine: 'line-through'}}>
@@ -97,12 +117,7 @@ const TodoListItem: React.FC<Props> = ({
 
       <View style={styles.updateBtn}>
         {updateToggle ? (
-          <TouchableOpacity
-            onPress={() => {
-              updateTodo(todosItem.id, updateText);
-              Keyboard.dismiss();
-              setUpdateToggle(!updateToggle);
-            }}>
+          <TouchableOpacity onPress={onUpdateText}>
             <EntIcon name="check" size={20} color="black" />
           </TouchableOpacity>
         ) : (
@@ -116,24 +131,7 @@ const TodoListItem: React.FC<Props> = ({
       </View>
 
       <View style={styles.deleteBtn}>
-        <TouchableOpacity
-          onPress={() => {
-            Alert.alert(
-              '삭제',
-              '정말로 삭제하시겠습니까?',
-              [
-                {text: '취소', onPress: () => {}, style: 'cancel'},
-                {
-                  text: '삭제',
-                  onPress: () => {
-                    deleteTodo(todosItem.id);
-                  },
-                  style: 'destructive',
-                },
-              ],
-              {cancelable: true, onDismiss: () => {}},
-            );
-          }}>
+        <TouchableOpacity onPress={onDeleteText}>
           <AntIcon name="delete" size={20} color="black" />
         </TouchableOpacity>
       </View>

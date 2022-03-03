@@ -7,14 +7,36 @@
  */
 
 import React from 'react';
-
-import MainNavigator from './navigators/MainNavigator';
+import {Scene, Router, Stack} from 'react-native-router-flux';
+import SplashScreen from './screens/SplashScreen';
+import HomeScreen from './screens/HomeScreen';
+import ErrorScreen from './screens/ErrorScreen';
+import ErrorBoundary from './component/ErrorBoundary';
 
 const App: React.FC = () => {
   return (
-    <>
-      <MainNavigator />
-    </>
+    <ErrorBoundary>
+      <Router>
+        <Stack key="root">
+          <Scene
+            key="Splash"
+            component={SplashScreen}
+            initial
+            title="Splash"
+            hideNavBar
+          />
+          <Scene key="Home" component={HomeScreen} title="Home" hideNavBar />
+          <Stack key="error" hideNavBar>
+            <Scene
+              key="Error"
+              component={ErrorScreen}
+              title="error"
+              hideNavBar
+            />
+          </Stack>
+        </Stack>
+      </Router>
+    </ErrorBoundary>
   );
 };
 

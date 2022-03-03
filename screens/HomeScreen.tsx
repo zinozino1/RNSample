@@ -16,6 +16,7 @@ import {
 import TodoTitle from '../component/TodoTitle';
 import TodoList from '../component/TodoList';
 import TodoInsert from '../component/TodoInsert';
+import ErrorBoundary from '../component/ErrorBoundary';
 
 interface TodoItem {
   id: string;
@@ -23,7 +24,7 @@ interface TodoItem {
   checked: boolean;
 }
 
-function HomeScreen({navigation}) {
+function HomeScreen({}) {
   const [loading, setLoading] = useState<boolean>(false);
   const [todos, setTodos] = useState<TodoItem[]>([]);
 
@@ -86,16 +87,15 @@ function HomeScreen({navigation}) {
             <Text>loading...</Text>
           </View>
         )}
-        <TodoTitle navigation={navigation} />
-        <TodoList
-          todos={todos}
-          updateTodo={updateTodo}
-          deleteTodo={deleteTodo}
-          checkTodo={checkTodo}></TodoList>
-        <TodoInsert
-          insertTodo={insertTodo}
-          setLoading={setLoading}
-          todos={todos}></TodoInsert>
+        <ErrorBoundary>
+          <TodoTitle />
+          <TodoList
+            todos={todos}
+            updateTodo={updateTodo}
+            deleteTodo={deleteTodo}
+            checkTodo={checkTodo}></TodoList>
+          <TodoInsert insertTodo={insertTodo}></TodoInsert>
+        </ErrorBoundary>
       </SafeAreaView>
     </>
   );

@@ -26,7 +26,7 @@ interface Props {
   todos: TodoItem[];
 }
 
-const TodoInsert: React.FC<Props> = ({insertTodo, setLoading, todos}) => {
+const TodoInsert: React.FC<Props> = ({insertTodo}) => {
   const [inputText, setInputText, onChangeInput] = useInput<string>('');
 
   const onSubmit = async (): Promise<void> => {
@@ -39,7 +39,6 @@ const TodoInsert: React.FC<Props> = ({insertTodo, setLoading, todos}) => {
     insertTodo({...newTodo});
     setInputText('');
     Keyboard.dismiss();
-    setLoading(false);
   };
 
   return (

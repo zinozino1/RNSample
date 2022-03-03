@@ -1,17 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet, Text, Button, TouchableOpacity} from 'react-native';
-import CalendarNavigator from '../navigators/CalendarNavigator';
+import {Actions} from 'react-native-router-flux';
 
-const TodoTitle: React.FC = ({navigation}) => {
+const TodoTitle: React.FC = ({}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Today's Tasks</Text>
       <TouchableOpacity
         style={{justifyContent: 'center'}}
         onPress={() => {
-          navigation.navigate('Calendar');
+          console.log(11);
+          Actions.push('error');
         }}>
-        <Text style={styles.calendarButton}>Calendar</Text>
+        <Text style={styles.calendarButton}>Error Trigger</Text>
       </TouchableOpacity>
     </View>
   );
