@@ -16,12 +16,13 @@ export default class ErrorBoundary extends React.Component<
   static getDerivedStateFromError(error: Error) {
     // 다음 렌더링에서 폴백 UI가 보이도록 상태를 업데이트
     // 에러 종류에 따라 다양한 폴백 UI 구성 가능
+    console.log('get error', error);
     return {hasError: true, error: error};
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     // 에러 로그 기록, 서버로 보낼수도 있음.
-    console.log('error : ', error, 'errorInfo : ', errorInfo);
+    console.log('com error : ', error, 'errorInfo : ', errorInfo);
   }
 
   render() {

@@ -21,12 +21,12 @@ interface TodoItem {
 }
 
 interface Props {
-  insertTodo: (newTodo: object) => void;
+  insertTodo: (newTodo: TodoItem) => void;
   setLoading: (loading: boolean) => void;
   todos: TodoItem[];
 }
 
-const TodoInsert: React.FC<Props> = ({insertTodo}) => {
+export default function TodoInsert({insertTodo}: Props) {
   const [inputText, setInputText, onChangeInput] = useInput<string>('');
 
   const onSubmit = async (): Promise<void> => {
@@ -57,7 +57,7 @@ const TodoInsert: React.FC<Props> = ({insertTodo}) => {
       </TouchableOpacity>
     </KeyboardAvoidingView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -87,5 +87,3 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
-
-export default TodoInsert;

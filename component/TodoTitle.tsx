@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {View, StyleSheet, Text, Button, TouchableOpacity} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
-const TodoTitle: React.FC = ({}) => {
+export default function TodoTitle() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Today's Tasks</Text>
@@ -16,7 +16,7 @@ const TodoTitle: React.FC = ({}) => {
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -33,5 +33,3 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 });
-
-export default TodoTitle;

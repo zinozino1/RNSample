@@ -33,12 +33,7 @@ interface Props {
   setLoading: (loading: boolean) => void;
 }
 
-const TodoListItem: React.FC<Props> = ({
-  todosItem,
-  updateTodo,
-  deleteTodo,
-  checkTodo,
-}) => {
+function TodoListItem({todosItem, updateTodo, deleteTodo, checkTodo}: Props) {
   const [updateToggle, setUpdateToggle] = useState<boolean>(false);
   const updateInputRef = useRef<TextInput>(null);
   const [updateText, setUpdateText, onChangeInput] = useInput<string>(
@@ -137,7 +132,7 @@ const TodoListItem: React.FC<Props> = ({
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {

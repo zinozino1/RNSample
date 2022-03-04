@@ -16,12 +16,12 @@ interface Props {
   setLoading: (loading: boolean) => void;
 }
 
-const TodoList: React.FC<Props> = ({
+export default function TodoList({
   todos,
   updateTodo,
   deleteTodo,
   checkTodo,
-}) => {
+}: Props) {
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -36,7 +36,7 @@ const TodoList: React.FC<Props> = ({
       </View>
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -44,5 +44,3 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
 });
-
-export default TodoList;
