@@ -12,11 +12,15 @@ import {
   TextInput,
   AsyncStorage,
   Button,
+  Platform,
 } from 'react-native';
 import TodoTitle from '../component/TodoTitle';
 import TodoList from '../component/TodoList';
 import TodoInsert from '../component/TodoInsert';
 import ErrorBoundary from '../component/ErrorBoundary';
+import useStore from '../stores/useStore';
+import {useObserver} from 'mobx-react';
+import TodoStore from '../stores/TodoStore';
 
 interface TodoItem {
   id: string;
@@ -27,6 +31,7 @@ interface TodoItem {
 function HomeScreen({}) {
   const [loading, setLoading] = useState<boolean>(false);
   const [todos, setTodos] = useState<TodoItem[]>([]);
+  const {todoStore} = useStore();
 
   const insertTodo = useCallback((newTodo: TodoItem): void => {
     setTodos(todos => todos.concat(newTodo));
@@ -52,34 +57,41 @@ function HomeScreen({}) {
     );
   }, []);
 
+  // useEffect(() => {
+  //   try {
+  //     setLoading(true);
+  //     const loadAsyncStorage = async () => {
+  //       const res = await AsyncStorage.getItem('task');
+  //       if (res !== null) setTodos(JSON.parse(res));
+  //     };
+  //     loadAsyncStorage();
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   try {
+  //     setLoading(true);
+  //     const saveAsyncStorage = async () => {
+  //       await AsyncStorage.setItem('task', JSON.stringify(todos));
+  //     };
+  //     saveAsyncStorage();
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [todos]);
   useEffect(() => {
-    try {
-      setLoading(true);
-      const loadAsyncStorage = async () => {
-        const res = await AsyncStorage.getItem('task');
-        setTodos(JSON.parse(res));
-      };
-      loadAsyncStorage();
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
+    TodoStore.load();
   }, []);
 
   useEffect(() => {
-    try {
-      setLoading(true);
-      const saveAsyncStorage = async () => {
-        await AsyncStorage.setItem('task', JSON.stringify(todos));
-      };
-      saveAsyncStorage();
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [todos]);
+    TodoStore.save();
+  }, [TodoStore.todos]);
 
-  return (
+  return useObserver(() => (
     <>
       <SafeAreaView style={styles.container}>
         {loading && (
@@ -90,15 +102,15 @@ function HomeScreen({}) {
         <ErrorBoundary>
           <TodoTitle />
           <TodoList
-            todos={todos}
-            updateTodo={updateTodo}
-            deleteTodo={deleteTodo}
-            checkTodo={checkTodo}></TodoList>
-          <TodoInsert insertTodo={insertTodo}></TodoInsert>
+            todos={TodoStore.todos}
+            updateTodo={TodoStore.update}
+            deleteTodo={TodoStore.delete}
+            checkTodo={TodoStore.check}></TodoList>
+          <TodoInsert insertTodo={TodoStore.insert}></TodoInsert>
         </ErrorBoundary>
       </SafeAreaView>
     </>
-  );
+  ));
 }
 
 const styles = StyleSheet.create({

@@ -10,7 +10,6 @@ import {
   Keyboard,
   AsyncStorage,
 } from 'react-native';
-import {sleep} from '../lib/util';
 import shortId from 'shortid';
 import useInput from '../hooks/useInput';
 

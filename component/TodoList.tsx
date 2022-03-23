@@ -25,14 +25,15 @@ export default function TodoList({
   return (
     <ScrollView>
       <View style={styles.container}>
-        {todos.map((item, _) => (
-          <TodoListItem
-            todosItem={item}
-            key={item.id}
-            updateTodo={updateTodo}
-            deleteTodo={deleteTodo}
-            checkTodo={checkTodo}></TodoListItem>
-        ))}
+        {todos &&
+          todos.map((item, _) => (
+            <TodoListItem
+              todosItem={item}
+              key={item.id}
+              updateTodo={updateTodo}
+              deleteTodo={deleteTodo}
+              checkTodo={checkTodo}></TodoListItem>
+          ))}
       </View>
     </ScrollView>
   );
